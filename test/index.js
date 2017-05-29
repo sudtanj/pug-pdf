@@ -1,23 +1,28 @@
 /* jshint node: true */
 'use strict';
 
-var jadepdf = require('../')
-  , assert = require('assert')
-  , fs = require('fs')
-  , tmp = require('tmp')
-  , through = require('through')
-  , should = require('should');
+var pugpdf = require('../'),
+   assert = require('assert'),
+   fs = require('fs'),
+   tmp = require('tmp'),
+   through = require('through'),
+   should = require('should');
 
 tmp.setGracefulCleanup();
 
 function helper(path, done) {
-  tmp.file({postfix: '.pdf'}, function(err, tmpPdfPath, tmpPdfFd) {
+  tmp.file({
+      postfix: '.pdf',
+      template: '/tmp' + path + '.XXXXXX.pdf',
+      keep: true,
+      discardDescriptor: true
+  }, function(err, tmpPdfPath, tmpPdfFd) {
     should.not.exist(err);
-    fs.close(tmpPdfFd);
+    //fs.close(tmpPdfFd);
 
     var outputStream = fs.createWriteStream(tmpPdfPath);
 
-    fs.createReadStream(__dirname+path).pipe(jadepdf()).pipe(outputStream);
+    fs.createReadStream(__dirname+path).pipe(pugpdf()).pipe(outputStream);
 
     outputStream.on('finish', function() {
       fs.readFile(tmpPdfPath, {encoding: 'utf8'}, function (err, data) { 
@@ -29,16 +34,16 @@ function helper(path, done) {
   });
 }
 
-describe('simple jade file without locals to pdf', function() {
+describe('simple pug file without locals to pdf', function() {
   it('should generate a non-empty PDF', function(done) {
     this.timeout(5000);
-    helper('/simple.jade', done);
+    helper('/simple.pug', done);
   });
 });
 
-describe('complex jade file without locals to pdf', function() {
+describe('complex pug file without locals to pdf', function() {
   it('should generate a non-empty PDF', function(done) {
     this.timeout(5000);
-    helper('/complex.jade', done);
+    helper('/complex.pug', done);
   });
 });

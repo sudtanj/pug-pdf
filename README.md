@@ -1,25 +1,28 @@
-Node module that converts jade files to PDFs. Fork of the awesome https://www.npmjs.com/package/jade-pdf-redline, since it wasn't being updated and had a show-stopping CSS bug.
+Node module that converts Pug files to PDFs. 
 
-> https://npmjs.org/package/jade-pdf2
+Forked from jade-pdf2 (version 0.0.4), which is itself a fork 
+of the awesome https://www.npmjs.com/package/jade-pdf-redline, since it wasn't being updated and had a show-stopping CSS bug.
+
+> https://npmjs.org/package/pug-pdf
 
 ## Getting started
 
-    npm install jade-pdf2
+    npm install pug-pdf
 
 ## Usage
 
 ```javascript
-var jadepdf = require('jade-pdf2')
+var pugpdf = require('pug-pdf')
   , fs = require('fs');
 
-fs.createReadStream('path/to/template.jade')
-  .pipe(jadepdf())
+fs.createReadStream('path/to/template.pug')
+  .pipe(pugpdf())
   .pipe(fs.createWriteStream('path/to/document.pdf'));
 ```
 
 ## Options
 
-Pass an options object (`jadepdf({/* options */})`) to configure the output.
+Pass an options object (`pugpdf({/* options */})`) to configure the output.
 
 ##### options.phantomPath
 Type: `String`
@@ -60,20 +63,20 @@ Default value: `{}`
 
 ### Installation
 
-To use jade-pdf2 as a standalone program from the terminal run
+To use pug-pdf as a standalone program from the terminal run
 
-    $ npm install -g jade-pdf2
+    $ npm install -g pug-pdf
 
 ### Usage
 
 ```sh
-Usage: jade-pdf [options] <jade-file-path>
+Usage: pug-pdf [options] <pug-file-path>
 
 Options:
 
   -h, --help                             output usage information
   -V, --version                          output the version number
-  <jade-file-path>                       Path of the jade file to convert
+  <pug-file-path>                        Path of the pug file to convert
   -p, --phantom-path [path]              Path to phantom binary
   -s, --css-path [path]                  Path to custom CSS file
   -f, --paper-format [format]            'A3', 'A4', 'A5', 'Legal', 'Letter' or 'Tabloid'
@@ -97,7 +100,7 @@ Then run the tests:
 
 The MIT License (MIT)
 
-Copyright (c) 2016 Eason Goodale
+Copyright (c) 2016 Eason Goodale (c) 2017 Chris Dennis
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in

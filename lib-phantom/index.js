@@ -1,17 +1,17 @@
 /* jshint node: true */
 'use strict';
 
-var system = require('system')
-  , page = require('webpage').create();
+var system = require('system'),
+   page = require('webpage').create();
 
 var args = [
-  'in'
-, 'out'
-, 'cssPath'
-, 'paperFormat'
-, 'paperOrientation'
-, 'paperBorder'
-, 'renderDelay'
+  'in',
+  'out',
+  'cssPath',
+  'paperFormat',
+  'paperOrientation',
+  'paperBorder',
+  'renderDelay',
 ].reduce(function(args, name, i) {
   args[name] = system.args[i+1];
   return args;
@@ -32,9 +32,9 @@ page.open(args.in, function(status) {
   }, args.cssPath);
 
   page.paperSize = {
-    format: args.paperFormat
-  , orientation: args.paperOrientation
-  , border: args.paperBorder
+    format: args.paperFormat,
+    orientation: args.paperOrientation,
+    border: args.paperBorder
   };
 
   setTimeout(function () {
