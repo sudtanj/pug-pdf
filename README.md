@@ -87,10 +87,16 @@ Just run the tests with:
 
     $ node test/index.js
 
+or
+
+    $ npm run test
+
 ## Known Bugs
 
 * Uses temporary files, which rather spoils the whole point of using
   this as a stream transform.
+  I haven't managed to get the PhantomJS control script read from
+  stdin and write to stdout yet.
 
 ## License
 

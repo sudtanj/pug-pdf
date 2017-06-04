@@ -4,7 +4,7 @@
 
 var fs = require('fs'),
     path = require('path'),
-    through = require('through'),
+    through2 = require('through2'),
     pug = require('pug'),
     tmp = require('tmp'),
     childProcess = require('child_process'),
@@ -12,7 +12,7 @@ var fs = require('fs'),
 
 tmp.setGracefulCleanup();
 
-function pugpdf(options) {
+function pugpdf (options) {
     options = options || {};
     options.phantomPath = options.phantomPath || require('phantomjs-prebuilt').path;
     options.cssPath = options.cssPath || __dirname + '/../pdf.css';
@@ -22,23 +22,26 @@ function pugpdf(options) {
     options.locals = options.locals || {};
 
     var pugStr = '';
-    var pugToHtml = through(
-        function write(data) {
-            pugStr += data; // accumulate whole pug template
+    var pugToHtml = through2(
+        function write (chunk, enc, cb) {
+            pugStr += chunk.toString(); // accumulate whole pug template
+            cb();
         },
-        function end() {
-            var fn = pug.compile(pugStr);
-            var html = fn(options.locals);
-            this.queue(html);
-            this.queue(null);
+        function end (cb) {
+            // Catch rendering errors so that we always return some HTML
+            try {
+                const html = pug.render(pugStr, options.locals);
+                this.push(html);
+            } catch (err) {
+                const error_html = `<!DOCTYPE html><html><body><h1>Error rendering Pug template</h1><pre>${err.message}</pre></body></html>`;
+                this.push(error_html);
+            }
+            cb();
         }
     );
-    pugToHtml.on('error', (err) => {
-        console.log('=== pugToHtml error: ', err);
-    });
 
-    const inputStream = through(),
-        outputStream = through();
+    const inputStream = through2(),
+        outputStream = through2();
 
     inputStream.pause(); // until we are ready to read
 

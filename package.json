@@ -24,12 +24,8 @@
     "duplexer": "^0.1.1",
     "pug": "^2.0.0-rc.1",
     "phantomjs-prebuilt": "^2.1.14",
-    "through": "^2.3.8",
+    "through2": "^2.0.0",
     "tmp": "^0.0.31"
-  },
-  "xdevDependencies": {
-    "should": "^11.2.1",
-    "assert": "^1.4.1"
   },
   "engines": {
     "node": ">=6.4.0"
