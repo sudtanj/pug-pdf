@@ -1,19 +1,18 @@
 Node module that converts Pug files to PDFs. 
 
-Forked from jade-pdf2 (version 0.0.4), which is itself a fork 
-of the awesome https://www.npmjs.com/package/jade-pdf-redline, since it wasn't being updated and had a show-stopping CSS bug.
+Forked from jade-pdf2 (version 0.0.4), which is itself a fork of jade-pdf-redline.
 
 > https://npmjs.org/package/pug-pdf
 
 ## Getting started
 
-    npm install pug-pdf
+    npm install --save pug-pdf
 
 ## Usage
 
 ```javascript
-var pugpdf = require('pug-pdf')
-  , fs = require('fs');
+const pugpdf = require('pug-pdf'),
+   fs = require('fs');
 
 fs.createReadStream('path/to/template.pug')
   .pipe(pugpdf())
@@ -49,11 +48,6 @@ Type: `String`
 Default value: `1cm`  
 *Supported dimension units are: 'mm', 'cm', 'in', 'px'*
 
-##### options.renderDelay
-Type: `Number`
-Default value: `1000`  
-*Delay in ms before rendering the PDF*
-
 ##### options.locals
 Type: `Object`
 Default value: `{}`  
@@ -72,29 +66,31 @@ To use pug-pdf as a standalone program from the terminal run
 ```sh
 Usage: pug-pdf [options] <pug-file-path>
 
-Options:
+Options are all optional:
 
-  -h, --help                             output usage information
+  -h, --help                             output this usage information
   -V, --version                          output the version number
-  <pug-file-path>                        Path of the pug file to convert
-  -p, --phantom-path [path]              Path to phantom binary
+  -p, --phantom-path [path]              Path to PhantomJS binary
   -s, --css-path [path]                  Path to custom CSS file
   -f, --paper-format [format]            'A3', 'A4', 'A5', 'Legal', 'Letter' or 'Tabloid'
   -r, --paper-orientation [orientation]  'portrait' or 'landscape'
   -b, --paper-border [measurement]       Supported dimension units are: 'mm', 'cm', 'in', 'px'
-  -d, --render-delay [millis]            Delay before rendering the PDF
-  -o, --out [path]                       Path of where to save the PDF
+  -o, --out [path]                       Path of where to save the PDF (defaults 
+                                         <pug-file-path> with '.pdf' extension)
 ```
 
 ## Running Tests
 
-To run the test suite, first invoke the following command within the repo, installing the development dependencies:
+The test 'suite' does not require any particular testing framework.
 
-    $ npm install
+Just run the tests with:
 
-Then run the tests:
+    $ node test/index.js
 
-    $ make test
+## Known Bugs
+
+* Uses temporary files, which rather spoils the whole point of using
+  this as a stream transform.
 
 ## License
 

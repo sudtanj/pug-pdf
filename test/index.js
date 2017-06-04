@@ -1,49 +1,50 @@
-/* jshint node: true */
+// test/index.js of module pug-pdf
+
 'use strict';
 
-var pugpdf = require('../'),
-   assert = require('assert'),
-   fs = require('fs'),
-   tmp = require('tmp'),
-   through = require('through'),
-   should = require('should');
+const pugpdf = require('../'),
+   fs = require('fs');
 
-tmp.setGracefulCleanup();
+function helper(input, output, options) {
 
-function helper(path, done) {
-  tmp.file({
-      postfix: '.pdf',
-      template: '/tmp' + path + '.XXXXXX.pdf',
-      keep: true,
-      discardDescriptor: true
-  }, function(err, tmpPdfPath, tmpPdfFd) {
-    should.not.exist(err);
-    //fs.close(tmpPdfFd);
+    console.log('Creating PDF file %s from PUG template %s...', output, input);
 
-    var outputStream = fs.createWriteStream(tmpPdfPath);
+    const outputStream = fs.createWriteStream(output);
 
-    fs.createReadStream(__dirname+path).pipe(pugpdf()).pipe(outputStream);
-
-    outputStream.on('finish', function() {
-      fs.readFile(tmpPdfPath, {encoding: 'utf8'}, function (err, data) { 
-        should.not.exist(err);
-        data.length.should.be.above(0);
-        done();
-      });
+    outputStream.on('finish', () => {
+        console.log('   ... %s complete', output);
     });
-  });
+
+    const inputStream = fs.createReadStream(input);
+    inputStream.on('error', (err) => {
+        console.log('   ... error %s processing templage %s', err.message, input);
+        console.error(err);
+    });
+
+    inputStream
+          .pipe(pugpdf(options))
+          .pipe(outputStream);
+
 }
 
-describe('simple pug file without locals to pdf', function() {
-  it('should generate a non-empty PDF', function(done) {
-    this.timeout(5000);
-    helper('/simple.pug', done);
-  });
-});
+const dir = __dirname + '/';
 
-describe('complex pug file without locals to pdf', function() {
-  it('should generate a non-empty PDF', function(done) {
-    this.timeout(5000);
-    helper('/complex.pug', done);
-  });
-});
+const options = {
+    // phantomPath -- use default
+    cssPath: __dirname + '/test.css',
+    paperFormat: 'A4',
+    paperOrientation: 'portrait',
+    paperBorder: '1cm',
+    renderDelay: 500,
+    locals: {},
+};
+
+helper(dir + 'simple.pug', dir + 'simple.pdf', options);
+
+helper(dir + 'complex.pug', dir + 'complex.pdf', options);
+
+// Need to clone options object, otherwise changes to it 
+// affect all calls to helper().
+const options2 = Object.assign({}, options);
+options2.paperOrientation = 'landscape';
+helper(dir + 'images.pug', dir + 'images.pdf', options2);
