@@ -38,5 +38,5 @@ fs.createReadStream(infile)
 	.pipe(outputStream);
 
 outputStream.on('finish', function() {
-	console.log('Created PDF file at', path);
+	console.log('Created PDF file at', program.out);
 });

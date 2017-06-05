@@ -1,5 +1,9 @@
 # Change Log for npm package 'pug-pdf'
 
+## 0.1.1 2017-06-05
+
+* Minor fixes to command-line script and test script.
+
 ## 0.1.0 2017-06-04
 
 * Now traps template rendering errors so that a PDF file will always be created.

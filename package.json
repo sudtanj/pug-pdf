@@ -1,6 +1,6 @@
 {
   "name": "pug-pdf",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Converts Pug files to PDF",
   "main": "index.js",
   "keywords": [

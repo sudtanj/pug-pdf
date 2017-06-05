@@ -41,10 +41,10 @@ const options = {
 
 helper(dir + 'simple.pug', dir + 'simple.pdf', options);
 
-//helper(dir + 'complex.pug', dir + 'complex.pdf', options);
+helper(dir + 'complex.pug', dir + 'complex.pdf', options);
 
 // Need to clone options object, otherwise changes to it 
 // affect all calls to helper().
 const options2 = Object.assign({}, options);
 options2.paperOrientation = 'landscape';
-//helper(dir + 'images.pug', dir + 'images.pdf', options2);
+helper(dir + 'images.pug', dir + 'images.pdf', options2);

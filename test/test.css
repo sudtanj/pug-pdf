@@ -1,3 +1,10 @@
-p {
-    color: blue;
+body {
+	padding: 1cm;
 }
+h1 {
+	color: red;
+}
+p {
+	color: blue;
+}
+
