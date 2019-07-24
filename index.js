@@ -49,13 +49,13 @@ function pugpdf (options) {
         if (err) {
             return outputStream.emit('error', err);
         }
-        fs.close(tmpHtmlFd);
+        fs.close(tmpHtmlFd, function(){});
 
         tmp.file({postfix: '.pdf'}, function(err, tmpPdfPath, tmpPdfFd) {
             if (err) {
                 return outputStream.emit('error', err);
             }
-            fs.close(tmpPdfFd);
+            fs.close(tmpPdfFd, function(){});
 
             var htmlToTmpHtmlFile = fs.createWriteStream(tmpHtmlPath);
             htmlToTmpHtmlFile.on('finish', function() {
