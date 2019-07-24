@@ -17,8 +17,7 @@ var args = [
     return args;
 }, {});
 
-// (page.open is equivalent to page.onLoadFinished)
-page.open(args.in, function(status) {
+function pageOpenHandler(status) {
     if (status == "fail") {
         page.close();
         phantom.exit(1);
@@ -41,4 +40,11 @@ page.open(args.in, function(status) {
     page.render(args.out);
     page.close();
     phantom.exit(0);
-});
+}
+
+// (page.open is equivalent to page.onLoadFinished)
+if(args.in.toString().indexOf("C:") >-1 || args.in.toString().indexOf("D:") >-1) {
+    page.open("file:///"+args.in,pageOpenHandler);
+} else {
+    page.open(args.in,pageOpenHandler);
+}
